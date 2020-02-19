@@ -12,16 +12,16 @@ class MemoryManager: public IMemoryManager {
   struct FreeStore
     {
      FreeStore * next;
-    }; 
+    };
   void expandPoolSize ();
   void cleanUp ();
   FreeStore * freeStoreHead;
   public:
-    MemoryManager () { 
+    MemoryManager () {
       freeStoreHead = 0;
       expandPoolSize ();
       }
-    virtual ~MemoryManager () { 
+    virtual ~MemoryManager () {
       cleanUp ();
       }
     virtual void * allocate(size_t);
@@ -37,11 +37,10 @@ inline void * MemoryManager::allocate(size_t size)
   }
 void MemoryManager::expandPoolSize ()
   {
-  size_t size = (sizeof(DClass) > sizeof(FreeStore *)) ?
-    sizeof(DClass) : sizeof(FreeStore *);
+  size_t size = (sizeof(DClass) > sizeof(FreeStore *)) ? sizeof(DClass) : sizeof(FreeStore *);
   FreeStore * head = reinterpret_cast <FreeStore *> (new char[size]);
   freeStoreHead = head;
-
+//expanding the new pool to pool size
   for (int i = 0; i < POOLSIZE; i++) {
     head -> next = reinterpret_cast <FreeStore *> (new char [size]);
     head = head -> next;
