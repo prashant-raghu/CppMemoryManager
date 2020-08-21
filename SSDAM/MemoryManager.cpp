@@ -44,7 +44,11 @@ public:
 
     void freeAddress(T *objPtr)
     {
-        objPtr->~T();
+        if (objPtr)
+        {
+            objPtr->~T();
+            objPtr = nullptr;
+        }
     }
 
     ~MemoryManager()
