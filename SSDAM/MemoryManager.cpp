@@ -9,6 +9,7 @@ class MemoryManager
 {
 private:
     char *ref;
+    T *startRef, *nxtRef, *endRef;
 
     const size_t typeSize;
     const size_t count;
@@ -17,7 +18,22 @@ private:
 public:
     MemoryManager() : count(countT), noOfObj(0), typeSize(sizeof(T))
     {
-        ref = new char[count * typeSize];
+        if (!countT)
+        {
+            throw "no of objs that can be allocated cannot be zero.";
+        }
+        try
+        {
+            ref = new char[count * typeSize];
+            startRef = reinterpret_cast<T*>(ref);
+            nxtRef = startRef - 1;
+            endRef = startRef + count;
+        }
+        catch (...)
+        {
+            cout << "Array Memory cannot be initialized.";
+            throw; //Re-throwing
+        }
     }
 
     void free()
@@ -28,18 +44,11 @@ public:
 
     T *nxtAddress()
     {
-        if (ref)
-        {
-            if (noOfObj == count)
-            {
-                noOfObj = 0;
-            }
-            T *p = reinterpret_cast<T *>(ref + (typeSize * noOfObj));
-            ++noOfObj;
-            return p;
+        ++nxtRef;
+        if(nxtRef == endRef) {
+            nxtRef = startRef;
         }
-        else
-            return nullptr;
+        return nxtRef;
     }
 
     void freeAddress(T *objPtr)
