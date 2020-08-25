@@ -1,4 +1,6 @@
 #include <bits/stdc++.h>
+#include <new>       // Must #include this to use "placement new"
+
 using namespace std;
 
 #define BASE_SIZE 1000
@@ -70,11 +72,7 @@ class MyPracticalClass
 {
 public:
     int a, b;
-    void inialize(int a, int b)
-    {
-        MyPracticalClass::a = a;
-        MyPracticalClass::b = b;
-    }
+    MyPracticalClass(int a, int b):a(a),b(b) {}
 };
 
 int main()
@@ -94,9 +92,7 @@ int main()
     {
         for (int j = 0; j < BASE_SIZE; j++)
         {
-
-            arra[j] = memMan.nxtAddress();
-            arra[j]->inialize(i, j);
+            arra[j] = new(memMan.nxtAddress()) MyPracticalClass(i,j);
         }
         for (int j = 0; j < BASE_SIZE; j++)
         {

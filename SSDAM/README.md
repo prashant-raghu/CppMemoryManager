@@ -2,9 +2,7 @@
 
 Please read [CHANGE_LOG.md](./CHANGE_LOG.md) for code changes.
 
-## Memory Manager (v1.0.0)
-
-Also known as SSDAM (Single Size-Determined Array Memory)
+## SSDAM (Single Size-Determined Array Memory) (v1.0.0)
 
 If you are given to create say 1000 objs and you must create them and destroy them in a given context 500000 times then tradition new/delete takes a lot of time as shown in by this code:
 

@@ -26,24 +26,31 @@ Microsoft Graphics Hybrid: Supported
 ```
 
 <br>
-<br>
 
-Test | new/delete | SSDAM
---- | ------------- | ------------
--   | 30.000000 sec | 4.000000 sec
--   | 31.000000 sec | 3.000000 sec
--   | 30.000000 sec | 4.000000 sec
--   | 32.000000 sec | 4.000000 sec
--   | 32.000000 sec | 4.000000 sec
--   | 32.000000 sec | 4.000000 sec
--   | 31.000000 sec | 4.000000 sec
--   | 31.000000 sec | 4.000000 sec
--   | 32.000000 sec | 4.000000 sec
--   | 31.000000 sec | 4.000000 sec 
-Avg | 31.200000 sec | 3.900000 sec 
+**File: Default.cpp**
+
+Avg = 31.2 sec 
 
 <br>
+
+**File: SSDAM/MemoryManager.cpp**
+
+Avg = 3.8 sec 
+
 <br>
 
-Ratio: 31.2/3.9 = **8:1**
+**File: SSDAM/MemoryManagerConsBased.cpp**
 
+Avg = 4.2 sec
+
+<br>
+
+**File: SSDAM/MemoryManagerNewDelete.cpp**
+
+Avg = 4.6 sec
+
+<br>
+
+**File: DLLOM/MemoryManager.cpp**
+
+Avg = 7.6 sec

@@ -25,7 +25,7 @@ public:
         try
         {
             ref = malloc(count * typeSize);
-            startRef = reinterpret_cast<T*>(ref);
+            startRef = reinterpret_cast<T *>(ref);
             nxtRef = startRef - 1;
             endRef = startRef + count;
         }
@@ -45,7 +45,8 @@ public:
     T *nxtAddress()
     {
         ++nxtRef;
-        if(nxtRef == endRef) {
+        if (nxtRef == endRef)
+        {
             nxtRef = startRef;
         }
         return nxtRef;
@@ -66,14 +67,25 @@ public:
     }
 };
 
+class MyPracticalClass;
+MemoryManager<MyPracticalClass, BASE_SIZE> memMan;
+
 class MyPracticalClass
 {
 public:
     int a, b;
-    void inialize(int a, int b)
+    MyPracticalClass(int a, int b)
     {
         MyPracticalClass::a = a;
         MyPracticalClass::b = b;
+    }
+    void *operator new(size_t size)
+    {
+        return memMan.nxtAddress();
+    }
+    void operator delete(void *p)
+    {
+        memMan.freeAddress(reinterpret_cast<MyPracticalClass *>(p));
     }
 };
 
@@ -84,8 +96,6 @@ int main()
     // unsync the I/O of C and C++.
     ios_base::sync_with_stdio(false);
 
-    MemoryManager<MyPracticalClass, BASE_SIZE> memMan;
-
     MyPracticalClass *arra[BASE_SIZE];
 
     //performing 1000 allocation and deletion * 500000 times
@@ -95,12 +105,11 @@ int main()
         for (int j = 0; j < BASE_SIZE; j++)
         {
 
-            arra[j] = memMan.nxtAddress();
-            arra[j]->inialize(i, j);
+            arra[j] = new MyPracticalClass(i, j);
         }
         for (int j = 0; j < BASE_SIZE; j++)
         {
-            memMan.freeAddress(arra[j]);
+            delete arra[j];
         }
     }
     // Recording end time.
