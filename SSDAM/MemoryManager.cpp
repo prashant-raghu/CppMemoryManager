@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <chrono>
 using namespace std;
 
 #define BASE_SIZE 1000
@@ -25,7 +26,7 @@ public:
         try
         {
             ref = malloc(count * typeSize);
-            startRef = reinterpret_cast<T*>(ref);
+            startRef = reinterpret_cast<T *>(ref);
             nxtRef = startRef - 1;
             endRef = startRef + count;
         }
@@ -45,7 +46,8 @@ public:
     T *nxtAddress()
     {
         ++nxtRef;
-        if(nxtRef == endRef) {
+        if (nxtRef == endRef)
+        {
             nxtRef = startRef;
         }
         return nxtRef;
@@ -79,10 +81,10 @@ public:
 
 int main()
 {
-    time_t start, end;
-    time(&start);
     // unsync the I/O of C and C++.
     ios_base::sync_with_stdio(false);
+
+    auto start = chrono::high_resolution_clock::now();
 
     MemoryManager<MyPracticalClass, BASE_SIZE> memMan;
 
@@ -104,11 +106,9 @@ int main()
         }
     }
     // Recording end time.
-    time(&end);
+    auto end = chrono::high_resolution_clock::now();
+
     // Calculating total time taken by the program.
-    double time_taken = double(end - start);
-    cout << "Time taken by Overloaded allocaters/deallocaters is : " << fixed
-         << time_taken << setprecision(5);
-    cout << " sec " << endl;
+    cout << "Time taken by Overloaded allocaters/deallocaters is : " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
     return 0;
 }

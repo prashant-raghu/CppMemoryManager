@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <chrono>
 #include <new>       // Must #include this to use "placement new"
 
 using namespace std;
@@ -135,10 +136,10 @@ public:
 
 int main()
 {
-    time_t start, end;
-    time(&start);
     // unsync the I/O of C and C++.
     ios_base::sync_with_stdio(false);
+
+    auto start = chrono::high_resolution_clock::now();
 
     MemoryManager<MyPracticalClass> memMan;
 
@@ -158,11 +159,9 @@ int main()
         }
     }
     // Recording end time.
-    time(&end);
+    auto end = chrono::high_resolution_clock::now();
+
     // Calculating total time taken by the program.
-    double time_taken = double(end - start);
-    cout << "Time taken by Overloaded allocaters/deallocaters is : " << fixed
-         << time_taken << setprecision(5);
-    cout << " sec " << endl;
+    cout << "Time taken by Overloaded allocaters/deallocaters is : " << chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms" << endl;
     return 0;
 }
