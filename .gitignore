@@ -42,3 +42,6 @@
 #vscode settings
 .vscode
 
+#temp files
+temp*.*
+
