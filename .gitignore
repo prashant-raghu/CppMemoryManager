@@ -1,6 +1,8 @@
+# ignore all files that dont have extension
 *
 !*/
 !*.*
+
 # Prerequisites
 *.d
 
@@ -33,3 +35,13 @@
 *.exe
 *.out
 *.app
+
+# Log File
+*.log
+
+#vscode settings
+.vscode
+
+#temp files
+temp*.*
+

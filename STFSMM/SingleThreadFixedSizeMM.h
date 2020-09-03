@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "DiscreteClass.h"
+#include "./DiscreteClass.h"
 #define POOLSIZE 32
 
 class IMemoryManager {
