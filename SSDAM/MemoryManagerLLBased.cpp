@@ -23,10 +23,9 @@ private:
     const size_t poolLinkSize;
     const size_t typeSize;
     const size_t poolObjCount;
-    size_t noOfObj;
 
 public:
-    MemoryManager() : poolObjCount(poolObjCountT), noOfObj(0), typeSize(sizeof(T)), poolLinkSize(sizeof(PoolLink))
+    MemoryManager() : poolObjCount(poolObjCountT), typeSize(sizeof(T)), poolLinkSize(sizeof(PoolLink))
     {
         if (!(poolObjCountT && countT))
         {
