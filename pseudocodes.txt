@@ -1,0 +1,217 @@
+Pseudocodes of Memory Managers
+
+1. SSDAM ***********************************************************
+
+MemoryManager(class T, count) {
+    typeSize = sizeof(T)
+
+    /* malloc returns address of memory */
+    ref = malloc(count * typeSize)
+
+    /* type cast address of memory (pointer) to type T */
+    startRef = <T *> ref
+
+    /* initialize nxtRef as address of object of type T just before the address of startRef. It is analogous to -1 index in arrays */
+    nxtRef = startRef – 1
+
+    /* endRef is analogous to index equal to array length + 1  in arrays */
+    endRef = startRef + count
+
+}
+
+nxtAddress() {
+    ++nxtRef
+
+    /* if the pool is used up, reset nxtRef to point to first object memory in the pool */
+     if (nxtRef == endRef)
+        nxtRef = startRef
+    
+    return nxtRef
+}
+
+freeAddress(objPtr) {
+    objPtr->destructor()
+}
+
+~MemoryManager() {
+    free(ref)
+}
+
+2. SSDAM+ ***********************************************************
+
+MemoryManager(class T, poolObjCount, count) {
+    typeSize = sizeof(T)
+
+    /* 
+        ref points to actual pool of objects memory (of size poolObjCount * typeSize) in complex node.
+        next points to complex node next to current node.
+    */
+    TYPE PoolLink { ref, next }
+
+    poolLinkSize = sizeof(PoolLink)
+
+    /* 
+        sRef, eRef and cRef refer to start, end and current complex nodes respectively. 
+        Size of one complex node is poolObjCount * typeSize + poolLinkSize.
+    */
+    sRef = eRef = cRef = <PoolLink *> malloc(poolObjCount * typeSize + poolLinkSize)
+    
+    sRef->ref =  sRef + 1
+    sRef->next = null
+
+    noOfPools = count / poolObjCount
+    
+    /* we have already created one pool above. So create total pools - 1 */
+    poolsToCreate = noOfPools - 1
+
+    PoolLink *p
+    while (poolsToCreate) {
+        p = <PoolLink *> malloc(poolObjCount * typeSize + poolLinkSize)
+        p->ref =  p + 1
+        p->next = null
+
+        eRef->next = p
+        eRef = p
+    }
+
+    /* point to first object memory in the memory pool of current complex node */
+    startRef = <T *> cRef->ref
+    nxtRef = startRef - 1
+    endRef = startRef + poolObjCount
+}
+
+nxtAddress() {
+    ++nxtRef
+    
+    /* if current pool is full jump to next pool */
+    if (nxtRef == endRef) {
+        cRef = cRef->next
+
+        /* all pools are full. jump to first pool */
+        if (cRef == null)
+            cRef = sRef
+
+        startRef = <T *> cRef->ref
+        nxtRef = startRef
+        endRef = startRef + poolObjCount
+    }
+    
+    return nxtRef
+}
+
+freeAddress(objPtr) {
+    objPtr->destructor()
+}
+
+~MemoryManager() {
+    PoolLink *tmpLink = sRef
+    while (tmpLink) {
+        sRef = sRef->next
+        free(tmpLink)
+        tmpLink = sRef
+    }
+}
+
+
+3. DLLOM ***********************************************************
+
+
+MemoryManager(class T, poolObjCount, count) {
+    typeSize = sizeof(T)
+
+    /* 
+        prev points to complex node before to current complex node.
+        next points to complex node next to current complex node.
+    */
+    TYPE Link { prev, next }
+
+    linkSize = sizeof(PoolLink)
+
+    /* size of complex node */
+    typePlusLinkSize = typeSize + linkSize
+
+    /* 
+        sRef and eRef refer to start and end complex nodes respectively. 
+        freeLink points to first free complex node in chain.
+    */
+    sRef = <Link *> malloc(typePlusLinkSize)
+    sRef->prev = sRef->next = null
+    freeLink = eRef = sRef
+}
+
+nxtAddress() {
+    objMemoryPointer = null
+
+    if (freeLink) {
+        objMemoryPointer = <T *> freeLink + 1
+
+        freeLink = freeLink->next
+    } 
+
+    /* create new complex node */
+    
+    else {
+        tmpLink = <Link *> malloc(typePlusLinkSize)
+
+        tmpLink->prev = eRef
+        tmpLink->next = null
+
+        eRef->next = tmpLink
+        eRef = tmpLink
+
+        objMemoryPointer = <T *> tmpLink + 1
+    }
+
+    return objMemoryPointer
+}
+
+freeAddress(objPtr) {
+    objPtr->destructor()
+
+    /* 
+        tmpLink2 points to complex node of objPtr.
+    */
+    tmpLink2 = (<Link *> objPtr) - 1
+
+    /* 
+        tmpLink is previous complex node to tmpLink2.
+        tmpLink3 is next complex node to tmpLink2.
+    */
+    tmpLink = tmpLink2->prev
+    tmpLink3 = tmpLink2->next
+
+    /* next complex nodes exist */
+    if (tmpLink3) {
+        
+        /* previous complex nodes also exist */
+        if (tmpLink) {
+            tmpLink->next = tmpLink3
+            tmpLink3->prev = tmpLink
+        }
+
+        /* previous complex nodes does not exist so currently tmpLink2 must be the first complex node in chain*/
+        else {
+            sRef = tmpLink3
+            tmpLink3->prev = null
+        }
+
+        /* move tmpLink2 to end of chain as free complex node */
+        eRef->next = tmpLink2
+        tmpLink2->prev = eRef
+        eRef = tmpLink2
+    }
+
+    tmpLink2->next = null
+
+    if (freeLink == null)
+        freeLink = tmpLink2
+}
+
+~MemoryManager() {
+    tmpLink = sRef
+    while (tmpLink) {
+        sRef = sRef->next
+        free(tmpLink)
+        tmpLink = sRef
+    }
+}

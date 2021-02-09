@@ -14,10 +14,9 @@ private:
 
     const size_t typeSize;
     const size_t count;
-    size_t noOfObj;
 
 public:
-    MemoryManager() : count(countT), noOfObj(0), typeSize(sizeof(T))
+    MemoryManager() : count(countT), typeSize(sizeof(T))
     {
         if (!countT)
         {
@@ -26,6 +25,7 @@ public:
         try
         {
             ref = malloc(count * typeSize);
+            
             startRef = reinterpret_cast<T *>(ref);
             nxtRef = startRef - 1;
             endRef = startRef + count;
