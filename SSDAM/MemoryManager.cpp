@@ -9,14 +9,14 @@ template <class T, size_t countT>
 class MemoryManager
 {
 private:
-    void *ref;
-    T *startRef, *nxtRef, *endRef;
+    T *startRef;
+    int index;
 
     const size_t typeSize;
     const size_t count;
 
 public:
-    MemoryManager() : count(countT), typeSize(sizeof(T))
+    MemoryManager() : count(countT), typeSize(sizeof(T)), index(0)
     {
         if (!countT)
         {
@@ -24,11 +24,7 @@ public:
         }
         try
         {
-            ref = malloc(count * typeSize);
-            
-            startRef = reinterpret_cast<T *>(ref);
-            nxtRef = startRef - 1;
-            endRef = startRef + count;
+            startRef = reinterpret_cast<T *>(malloc(count * typeSize));
         }
         catch (...)
         {
@@ -39,18 +35,16 @@ public:
 
     void cleanUp()
     {
-        if (ref)
-            free(ref);
+        if (startRef)
+            free(startRef);
     }
 
     T *nxtAddress()
     {
-        ++nxtRef;
-        if (nxtRef == endRef)
-        {
-            nxtRef = startRef;
-        }
-        return nxtRef;
+        if (index == count)
+            index = 0;
+
+        return startRef + index++;
     }
 
     void freeAddress(T *objPtr)
