@@ -23,7 +23,8 @@ int main()
 
     auto start = chrono::high_resolution_clock::now();
 
-    vector<MyPracticalClass> arra(1000);
+    vector<MyPracticalClass> arra;
+    arra.reserve(1000); // dynamic memory allocation
 
     //performing 1000 allocation and deletion * 500000 times
     // 1 Billion operations
