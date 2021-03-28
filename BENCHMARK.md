@@ -19,9 +19,27 @@
 <br>
 <br>
 
-**File: SSDAM/MemoryManager.cpp & MemoryManagerLLBased.cpp**
+**File: SSDAM/MemoryManagerOperatorSubscript.cpp**
 
-Avg = 3.800 sec 
+Avg = 3.050 sec 
+
+<br>
+
+**File: SSDAM/VectorSSDAM.cpp**
+
+Avg = 3.100 sec 
+
+<br>
+
+**File: SSDAM/MemoryManager.cpp**
+
+Avg = 3.550 sec 
+
+<br>
+
+**File: MemoryManagerLLBased.cpp**
+
+Avg = 3.750 sec 
 
 <br>
 
