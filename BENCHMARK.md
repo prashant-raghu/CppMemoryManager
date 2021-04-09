@@ -19,48 +19,55 @@
 <br>
 <br>
 
-**File: SSDAM/MemoryManagerOperatorSubscript.cpp**
+
+[SimplestOptimization.cpp](SimplestOptimization.cpp)
+
+Avg = 2.270 sec 
+
+<br>
+
+[SSDAM/MemoryManagerOperatorSubscript.cpp](SSDAM/MemoryManagerOperatorSubscript.cpp)
 
 Avg = 3.050 sec 
 
 <br>
 
-**File: SSDAM/VectorSSDAM.cpp**
+[SSDAM/VectorSSDAM.cpp](SSDAM/VectorSSDAM.cpp)
 
 Avg = 3.100 sec 
 
 <br>
 
-**File: SSDAM/MemoryManager.cpp**
+[SSDAM/MemoryManager.cpp](SSDAM/MemoryManager.cpp)
 
 Avg = 3.550 sec 
 
 <br>
 
-**File: MemoryManagerLLBased.cpp**
+[MemoryManagerLLBased.cpp](MemoryManagerLLBased.cpp)
 
 Avg = 3.750 sec 
 
 <br>
 
-**File: SSDAM/MemoryManagerConsBased.cpp**
+[SSDAM/MemoryManagerConsBased.cpp](SSDAM/MemoryManagerConsBased.cpp)
 
 Avg = 4.100 sec
 
 <br>
 
-**File: SSDAM/MemoryManagerNewDelete.cpp**
+[SSDAM/MemoryManagerNewDelete.cpp](SSDAM/MemoryManagerNewDelete.cpp)
 
 Avg = 4.333 sec
 
 <br>
 
-**File: DLLOM/MemoryManager.cpp**
+[DLLOM/MemoryManager.cpp](DLLOM/MemoryManager.cpp)
 
 Avg = 7.496 sec
 
 <br>
 
-**File: Default.cpp**
+[Default.cpp](Default.cpp)
 
 Avg = 30.469 sec 
