@@ -22,7 +22,7 @@
 
 [SimplestOptimization.cpp](SimplestOptimization.cpp)
 
-Avg = 2.270 sec 
+Avg = 2.375 sec 
 
 <br>
 
